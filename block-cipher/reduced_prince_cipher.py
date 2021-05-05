@@ -42,7 +42,7 @@ M_prime = block_diag(M_hat0, M_hat1, M_hat1, M_hat0)
 
 def expand_key(key: BitArray) -> Tuple[BitArray, BitArray, BitArray]:
     """
-    Key expansion for PRINCE cipher
+    Key expansion for PRINCE cipher.
 
     Params
     ------
@@ -57,7 +57,7 @@ def expand_key(key: BitArray) -> Tuple[BitArray, BitArray, BitArray]:
 
 def s_layer(state: BitArray) -> BitArray:
     """
-    Substitution layer for PRINCE cipher
+    Substitution layer for PRINCE cipher.
 
     Params
     ------
@@ -75,7 +75,7 @@ def s_layer(state: BitArray) -> BitArray:
 
 def inverse_s_layer(state: BitArray) -> BitArray:
     """
-    Inverse substitution layer for PRINCE cipher
+    Inverse substitution layer for PRINCE cipher.
 
     Params
     ------
@@ -128,7 +128,7 @@ def inverse_shift_rows(state: BitArray) -> BitArray:
 
 def m_prime_layer(state: BitArray) -> BitArray:
     """
-    Matrix multiplication layer (M'-layer) for PRINCE cipher
+    Matrix multiplication layer (M'-layer) for PRINCE cipher.
 
     Params
     ------
@@ -142,7 +142,7 @@ def m_prime_layer(state: BitArray) -> BitArray:
 
 def m_layer(state: BitArray) -> BitArray:
     """
-    Matrix multiplication and row shift layer (M-layer) for PRINCE cipher
+    Matrix multiplication and row shift layer (M-layer) for PRINCE cipher.
 
     Params
     ------
