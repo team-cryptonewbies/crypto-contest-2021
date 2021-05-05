@@ -91,9 +91,9 @@ def inverse_s_layer(state: BitArray) -> BitArray:
         result.append(BitArray(hex(sbox[nibble.uint])))
     return result
 
-def m_layer(state: BitArray) -> BitArray:
+def m_prime_layer(state: BitArray) -> BitArray:
     """
-    Matrix multiplication layer for PRINCE cipher
+    Matrix multiplication layer (M'-layer) for PRINCE cipher
 
     Params
     ------
