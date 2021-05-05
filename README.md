@@ -6,9 +6,15 @@
 
 뭘 하라는건지 모르겠음 ㅇㅅㅇ
 
-## 2번 블록암호 문제
+## 2번 블록암호 문제 (`block-cipher` 디렉토리)
 
 경량 암호 PRINCE64/128 깨기
+
+문제에서 주어진 데이터가 한 nibble씩 변하는 것을 보면, Integral Cryptanalysis를 활용하라는 것임을 알 수 있음.
+
+- `reduced_prince_cipher.py`: 4-round PRINCE의 구현
+  - `cipher_tests.py`: 암호 테스트용 코드
+- `prince_integral_attack.py`: Integral Cryptanalysis를 이용한 공격
 
 ## 3번 암호응용 문제
 
