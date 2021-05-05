@@ -104,8 +104,8 @@ def shift_rows(state: BitArray) -> BitArray:
     shift_table = [0x0, 0xd, 0xa, 0x7, 0x4, 0x1, 0xe, 0xb,  # 01234567
                    0x8, 0x5, 0x2, 0xf, 0xc, 0x9, 0x6, 0x3]  # 89abcdef
     result_nibbles = [0] * 16
-    for nibble in state.cut(4):
-        result_nibbles[shift_table[nibble.uint]] = nibble.copy()
+    for i, nibble in enumerate(state.cut(4)):
+        result_nibbles[shift_table[i]] = nibble.copy()
     return BitArray().join(result_nibbles)
 
 def m_prime_layer(state: BitArray) -> BitArray:
