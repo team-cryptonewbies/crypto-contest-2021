@@ -108,6 +108,24 @@ def shift_rows(state: BitArray) -> BitArray:
         result_nibbles[shift_table[i]] = nibble.copy()
     return BitArray().join(result_nibbles)
 
+def inverse_shift_rows(state: BitArray) -> BitArray:
+    """
+    Inverse row shift operaton for M-layer.
+
+    Params
+    ------
+    - state: BitArray
+      - A state bit-array to apply inverse SR. Its length must equal to 64
+        bits.
+    """
+    assert len(state) == 64
+    inverse_shift_table = [0x0, 0x5, 0xa, 0xf, 0x4, 0x9, 0xe, 0x3,  # 01234567
+                           0x8, 0xd, 0x2, 0x7, 0xc, 0x1, 0x6, 0xb]  # 89abcdef
+    result_nibbles = [0] * 16
+    for i, nibble in enumerate(state.cut(4)):
+        result_nibbles[inverse_shift_table[i]] = nibble.copy()
+    return BitArray().join(result_nibbles)
+
 def m_prime_layer(state: BitArray) -> BitArray:
     """
     Matrix multiplication layer (M'-layer) for PRINCE cipher
