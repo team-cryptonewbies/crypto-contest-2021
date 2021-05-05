@@ -188,4 +188,25 @@ def encrypt(plaintext: BitArray, key: BitArray) -> BitArray:
 
     # round 2
     state = s_layer(state)
+    state = m_layer(state)
+    state ^= RC[1]
+    state ^= key1
+
+    # middle layer
+    state = s_layer(state)
+    state = m_prime_layer(state)
+    state = inverse_s_layer(state)
+
+    # round 3
+    state ^= RC[2]
+    state ^= key1
+    state = inverse_m_layer(state)
+    state = inverse_s_layer(state)
+
+    # round 4
+    state ^= RC[3]
+    state ^= key1
+
+    # whitening
+    state ^= key0_prime
     return state
