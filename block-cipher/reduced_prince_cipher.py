@@ -179,8 +179,10 @@ def encrypt(plaintext: BitArray, key: BitArray) -> BitArray:
     key0, key0_prime, key1 = expand_key(key)
     state = plaintext.copy()
 
-    # round 1
+    # whitening
     state ^= key0
+
+    # round 1
     state ^= key1
     state ^= RC[0]
 
