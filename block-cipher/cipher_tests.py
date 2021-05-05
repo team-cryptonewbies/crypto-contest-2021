@@ -20,5 +20,10 @@ class TestCipher(unittest.TestCase):
         re_multiplied = reduced_prince_cipher.m_prime_layer(multiplied)
         self.assertEqual(arr, re_multiplied)
 
+    def test_shift_rows(self):
+        arr = BitArray('0x0123456789abcdef')
+        shifted = reduced_prince_cipher.shift_rows(arr)
+        self.assertEqual(shifted, BitArray('0x05af49e38d27c16b'))
+
 if __name__ == '__main__':
     unittest.main()
