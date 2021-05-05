@@ -140,6 +140,29 @@ def m_prime_layer(state: BitArray) -> BitArray:
     vec = np.array([bit.uint for bit in state.cut(1)])
     return BitArray((M_prime @ vec) % 2)
 
+def m_layer(state: BitArray) -> BitArray:
+    """
+    Matrix multiplication and row shift layer (M-layer) for PRINCE cipher
+
+    Params
+    ------
+    - state: BitArray
+      - A state bit-array to apply M-layer. Its length must equal to 64 bits.
+    """
+    return shift_rows(m_prime_layer(state))
+
+def inverse_m_layer(state: BitArray) -> BitArray:
+    """
+    Inverse M-layer for PRINCE cipher.
+
+    Params
+    ------
+    - state: BitArray
+      - A state bit-array to apply inverse M-layer. Its length must equal to 64
+        bits.
+    """
+    return m_prime_layer(inverse_shift_rows(state))
+
 def encrypt(plaintext: BitArray, key: BitArray) -> BitArray:
     """
     Encrypt a block using 4-round PRINCE cipher.
