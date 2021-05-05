@@ -14,5 +14,11 @@ class TestCipher(unittest.TestCase):
         self.assertFalse(substituted is inversed)
         self.assertFalse(arr is inversed)
 
+    def test_m_layer(self):
+        arr = BitArray('0x0123456789abcdef')
+        multiplied = reduced_prince_cipher.m_layer(arr)
+        re_multiplied = reduced_prince_cipher.m_layer(multiplied)
+        self.assertEqual(arr, re_multiplied)
+
 if __name__ == '__main__':
     unittest.main()

@@ -102,6 +102,8 @@ def m_layer(state: BitArray) -> BitArray:
         equal to 64 bits.
     """
     assert len(state) == 64
+    vec = np.array([bit.uint for bit in state.cut(1)])
+    return BitArray((M_prime @ vec) % 2)
 
 def encrypt(plaintext: BitArray, key: BitArray) -> BitArray:
     """
