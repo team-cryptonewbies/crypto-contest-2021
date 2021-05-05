@@ -24,6 +24,7 @@ class TestCipher(unittest.TestCase):
         arr = BitArray('0x0123456789abcdef')
         shifted = reduced_prince_cipher.shift_rows(arr)
         self.assertEqual(shifted, BitArray('0x05af49e38d27c16b'))
+        self.assertFalse(arr is shifted)
 
 if __name__ == '__main__':
     unittest.main()
