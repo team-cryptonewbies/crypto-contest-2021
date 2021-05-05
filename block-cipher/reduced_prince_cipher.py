@@ -70,7 +70,7 @@ def s_layer(state: BitArray) -> BitArray:
             0x6, 0x7, 0x8, 0x0, 0xe, 0x5, 0xd, 0x4]  # 89abcdef
     result = BitArray()
     for nibble in state.cut(4):
-        result.append(BitArray(hex(sbox[nibble.int])))
+        result.append(BitArray(hex(sbox[nibble.uint])))
     return result
 
 def inverse_s_layer(state: BitArray) -> BitArray:
@@ -88,7 +88,7 @@ def inverse_s_layer(state: BitArray) -> BitArray:
             0xa, 0x6, 0x4, 0x0, 0x5, 0xe, 0xc, 0x1]  # 89abcdef
     result = BitArray()
     for nibble in state.cut(4):
-        result.append(BitArray(hex(sbox[nibble.int])))
+        result.append(BitArray(hex(sbox[nibble.uint])))
     return result
 
 def m_layer(state: BitArray) -> BitArray:
