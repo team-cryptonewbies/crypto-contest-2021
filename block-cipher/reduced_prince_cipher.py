@@ -42,13 +42,12 @@ M_prime = block_diag(M_hat0, M_hat1, M_hat1, M_hat0)
 
 def expand_key(key: BitArray) -> Tuple[BitArray, BitArray, BitArray]:
     """
-    expand_key(key: BitArray) --> Tuple[BitArray, BitArray, BitArray]
-        Key expansion for PRINCE cipher
+    Key expansion for PRINCE cipher
 
     Params
     ------
-    key: BitArray
-        128-bit key to expand. Its length must equal to 128 bits.
+    - key: BitArray
+      - 128-bit key to expand. Its length must equal to 128 bits.
     """
     assert len(key) == 128
     key0 = key[:64]
@@ -58,13 +57,12 @@ def expand_key(key: BitArray) -> Tuple[BitArray, BitArray, BitArray]:
 
 def s_layer(state: BitArray) -> BitArray:
     """
-    s_layer(state: BitArray) -> BitArray
-        Substitution layer for PRINCE cipher
+    Substitution layer for PRINCE cipher
 
     Params
     ------
-    state: BitArray
-        A state bit-array to apply the substitution. Its length must be a
+    - state: BitArray
+      - A state bit-array to apply the substitution. Its length must be a
         multiple of 4.
     """
     assert len(state) % 4 == 0
@@ -77,13 +75,12 @@ def s_layer(state: BitArray) -> BitArray:
 
 def inverse_s_layer(state: BitArray) -> BitArray:
     """
-    inverse_s_layer(state: BitArray) -> BitArray
-        Inverse substitution layer for PRINCE cipher
+    Inverse substitution layer for PRINCE cipher
 
     Params
     ------
-    state: BitArray
-        A state bit-array to apply the inverse substitution. Its length must be
+    - state: BitArray
+      - A state bit-array to apply the inverse substitution. Its length must be
         a multiple of 4.
     """
     assert len(state) % 4 == 0
@@ -96,28 +93,26 @@ def inverse_s_layer(state: BitArray) -> BitArray:
 
 def m_layer(state: BitArray) -> BitArray:
     """
-    m_layer(state: BitArray) -> BitArray
-        Matrix multiplication layer for PRINCE cipher
+    Matrix multiplication layer for PRINCE cipher
 
     Params
     ------
-    state: BitArray
-        A state bit-array to apply matrix multiplications. Its length must
+    - state: BitArray
+      - A state bit-array to apply matrix multiplications. Its length must
         equal to 64 bits.
     """
     assert len(state) == 64
 
 def encrypt(plaintext: BitArray, key: BitArray) -> BitArray:
     """
-    encrypt(plaintext: BitArray, key: BitArray) -> BitArray
-        Encrypt a block using 4-round PRINCE cipher.
+    Encrypt a block using 4-round PRINCE cipher.
 
     Params
     ------
-    plaintext: BitArray
-        A plaintext block to encrypt. The length must equal to 64 bits.
-    key: BitArray
-        128-bit key for encryption. The length must equal to 128 bits.
+    - plaintext: BitArray
+      - A plaintext block to encrypt. The length must equal to 64 bits.
+    - key: BitArray
+      - 128-bit key for encryption. The length must equal to 128 bits.
     """
     assert len(plaintext) == 64
     assert len(key) == 128
