@@ -50,9 +50,11 @@ def expand_key(key: BitArray) -> Tuple[BitArray, BitArray, BitArray]:
       - 128-bit key to expand. Its length must equal to 128 bits.
     """
     assert len(key) == 128
-    key0 = key[:64]
-    key1 = key[64:]
-    key0_prime = key0.copy().ror(1) ^ (key0 >> 63)
+    key0 = key[:64].copy()
+    rotated = key0.copy()
+    rotated.ror(1)
+    key1 = key[64:].copy()
+    key0_prime = rotated ^ (key0 >> 63)
     return key0, key0_prime, key1
 
 def s_layer(state: BitArray) -> BitArray:
