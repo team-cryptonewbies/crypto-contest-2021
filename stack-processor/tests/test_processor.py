@@ -19,7 +19,3 @@ class TestStackProcessor(unittest.TestCase):
         processor = StackProcessor("1 2 EQUAL".split())
         result = processor.run()
         self.assertListEqual(list(result), [False])
-
-
-if __name__ == "__main__":
-    unittest.main()
