@@ -32,6 +32,12 @@ class StackProcessor:
         return data
 
     def run(self):
+        """
+        Run the stack processor.
+
+        :returns: Execution result.
+        :raises KeyError: Raises KeyError when command is invalid.
+        """
         self.stack = deque()
         for elem in self.data:
             parsed = self.__parse_data(elem)
