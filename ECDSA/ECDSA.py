@@ -103,3 +103,7 @@ def VerifyHash(self, hash, r, s):
 
     return v is R
 
+msg = 'HI'
+lsh = LSHDigest.getInstance(256, 256)
+lsh.update(msg)
+hash = lsh.final()
