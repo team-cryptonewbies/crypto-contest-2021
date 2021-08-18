@@ -14,6 +14,35 @@ def octet_str_to_int(octet_str: str) -> int:
     return int(octet_str.replace(" ", ""), 16)
 
 
+def grouper(n: int, iterable: Iterable) -> List[int]:
+    """
+    Group iterable to list of n-tuples.
+
+    :param n: Length of tuples.
+    :param iterable: Iterable to group.
+    :returns: Grouped iterable content.
+    """
+    return list(
+        map(
+            lambda x: int("".join(x), 16),
+            zip_longest(*[iter(iterable)] * n, fillvalue=None),
+        )
+    )
+
+
+def octet_str_to_octet_list(octet_str: str) -> List[int]:
+    """
+    Convert octet string to octet list.
+
+    :param octet_str: Octet string to convert.
+    :returns: Converted octet list.
+    """
+    stripped = "".join(octet_str.split())
+    if len(stripped) % 2 != 0:
+        stripped = "0" + stripped
+    return grouper(2, stripped)
+
+
 def octet_list_to_int(octet_list: List[int]) -> int:
     """
     Convert octet list to integer.
@@ -43,22 +72,6 @@ def octet_list_to_field_elem(octet_list: List[int], p: int) -> int:
     return elem
 
 
-def grouper(n: int, iterable: Iterable) -> List[int]:
-    """
-    Group iterable to list of n-tuples.
-
-    :param n: Length of tuples.
-    :param iterable: Iterable to group.
-    :returns: Grouped iterable content.
-    """
-    return list(
-        map(
-            lambda x: int("".join(x), 16),
-            zip_longest(*[iter(iterable)] * n, fillvalue=None),
-        )
-    )
-
-
 def octet_str_to_point(octet_str: str, params: Dict[str, int]) -> Tuple[int, int]:
     """
     Convert octet string to EC point.
@@ -70,7 +83,7 @@ def octet_str_to_point(octet_str: str, params: Dict[str, int]) -> Tuple[int, int
     :raises NotImplementedError: Support for curve over F_(2^m) is not
     implemented.
     """
-    octets = grouper(2, octet_str.replace(" ", ""))
+    octets = octet_str_to_octet_list(octet_str)
     if len(octets) == 1 and octets[0] == "00":
         return (0, 0)
     if len(octets) == ceil(log2(params["p"]) / 8) + 1:

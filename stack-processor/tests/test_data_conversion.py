@@ -3,6 +3,7 @@ from stack_processor.ecdsa.data_conversion import (
     octet_list_to_field_elem,
     octet_list_to_int,
     octet_str_to_int,
+    octet_str_to_octet_list,
 )
 
 
@@ -14,3 +15,4 @@ class TestDataConversion(unittest.TestCase):
             0x11223344,
         )
         self.assertEqual(octet_list_to_field_elem([0x2, 0x0F], 8191), 527)
+        self.assertEqual(octet_str_to_octet_list("1223344"), [0x01, 0x22, 0x33, 0x44])
