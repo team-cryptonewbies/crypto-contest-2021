@@ -3,17 +3,6 @@ from stack_processor.ecdsa.curveparam import CurveParam
 
 
 class TestCurveParam(unittest.TestCase):
-    def test_data_conversion(self):
-        self.assertEqual(
-            CurveParam._CurveParam__octet_str_to_int("11223344"), 0x11223344  # type: ignore
-        )
-        self.assertEqual(
-            CurveParam._CurveParam__octet_list_to_int([0x11, 0x22, 0x33, 0x44]), 0x11223344  # type: ignore
-        )
-        self.assertEqual(
-            CurveParam._CurveParam__octet_list_to_field_elem([0x2, 0x0F], 8191), 527  # type: ignore
-        )
-
     def test_init(self):
         secp256r1 = CurveParam(
             "secp256r1",
