@@ -2,8 +2,9 @@ def legendre(a: int, p: int) -> int:
     """
     Calculate value of Legendre symbol (a/p).
 
-    :param a: Value of a in (a/p)
-    :param p: Value of p in (a/p)
+    :param a: Value of a in (a/p).
+    :param p: Value of p in (a/p).
+    :returns: Value of (a/p).
     """
     return pow(a, (p - 1) // 2, p)
 
