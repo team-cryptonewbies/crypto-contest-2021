@@ -29,6 +29,9 @@ class TestECDSA(unittest.TestCase):
         self.assertTrue(ecdsa.verify_sign(message, signature))
 
     def test_sign(self):
+        faulty = ECDSA(secp256r1, (None, key_pair[1]))
+        with self.assertRaises(AssertionError):
+            faulty.create_sign(message.encode("utf-8"))
         signature = utils.encode_dss_signature(
             *ecdsa.create_sign(message.encode("utf-8"))
         )

@@ -12,14 +12,15 @@ class ECDSA:
     def __init__(
         self,
         curve: CurveParam,
-        key_pair: Optional[Tuple[int, CurvePoint]] = None,
+        key_pair: Optional[Tuple[Optional[int], CurvePoint]] = None,
         hash_func: Callable = sha256,
     ):
         """
         Initalize ECDSA.
 
         :param curve: Curve used to sign.
-        :param key_pair: Key pair to use. If None, generate a new one.
+        :param key_pair: Key pair to use. Private key can be None if the object
+        is not intended for signature creation.
         """
         self.curve = curve
         self.hash_func = hash_func
@@ -45,7 +46,9 @@ class ECDSA:
 
         :param message: The message to sign.
         :returns: signature (r, s).
+        :raises AssertionError: Assertion fails when private key is None.
         """
+        assert self.d_U != None
         r = 0
         k = 0
         R = CurvePoint(0, 0, self.curve)
