@@ -1,6 +1,7 @@
 from base64 import b64decode
 from collections import deque
 from typing import List
+from .hashes import lsh256
 import binascii
 
 
@@ -22,6 +23,10 @@ class StackProcessor:
         op = self.stack.pop()
         self.stack.append(op)
         self.stack.append(op)
+
+    def __hash(self):
+        op = self.stack.pop()
+        self.stack.append(lsh256(op).encode("utf-8"))
 
     @staticmethod
     def __parse_data(data: str):
@@ -67,6 +72,7 @@ class StackProcessor:
                     "EQUAL": self.__equal,
                     "OP_EqualVerify": self.__equal,
                     "OP_DUP": self.__dup,
+                    "OP_HASH": self.__hash,
                 }
                 cmd_table[parsed]()  # type: ignore
         return self.stack

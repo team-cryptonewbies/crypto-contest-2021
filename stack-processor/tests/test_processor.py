@@ -1,6 +1,7 @@
 import unittest
 from base64 import b64encode
 from stack_processor.processor import StackProcessor
+from stack_processor.hashes import lsh256
 
 message = "Let Team Crypt0newbies win Crypto Contest 2021!"
 
@@ -38,6 +39,14 @@ class TestStackProcessor(unittest.TestCase):
         encoded_message = b64encode(message.encode("utf-8")).decode("ascii")
         processor = StackProcessor(
             ["bytes_utf8:" + message, "base64:" + encoded_message, "EQUAL"]
+        )
+        result = processor.run()
+        self.assertListEqual(list(result), [True])
+
+    def test_hash(self):
+        digest = lsh256(message.encode("utf-8"))
+        processor = StackProcessor(
+            ["bytes_utf8:" + message, "OP_HASH", "bytes_utf8:" + digest, "EQUAL"]
         )
         result = processor.run()
         self.assertListEqual(list(result), [True])
