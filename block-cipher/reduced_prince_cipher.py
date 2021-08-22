@@ -8,37 +8,34 @@ from scipy.linalg import block_diag
 from typing import Tuple
 
 RC = [
-    BitArray('0x0000000000000000'),
-    BitArray('0x13198a2e03707344'),
-    BitArray('0xa4093822299f31d0'),
-    BitArray('0x082efa98ec4e6c89')
+    BitArray("0x0000000000000000"),
+    BitArray("0x13198a2e03707344"),
+    BitArray("0xa4093822299f31d0"),
+    BitArray("0x082efa98ec4e6c89"),
 ]
 
-M0 = np.array([[0, 0, 0, 0],
-               [0, 1, 0, 0],
-               [0, 0, 1, 0],
-               [0, 0, 0, 1]])
-M1 = np.array([[1, 0, 0, 0],
-               [0, 0, 0, 0],
-               [0, 0, 1, 0],
-               [0, 0, 0, 1]])
-M2 = np.array([[1, 0, 0, 0],
-               [0, 1, 0, 0],
-               [0, 0, 0, 0],
-               [0, 0, 0, 1]])
-M3 = np.array([[1, 0, 0, 0],
-               [0, 1, 0, 0],
-               [0, 0, 1, 0],
-               [0, 0, 0, 0]])
-M_hat0 = np.vstack((np.hstack((M0, M1, M2, M3)),
-                    np.hstack((M1, M2, M3, M0)),
-                    np.hstack((M2, M3, M0, M1)),
-                    np.hstack((M3, M0, M1, M2))))
-M_hat1 = np.vstack((np.hstack((M1, M2, M3, M0)),
-                    np.hstack((M2, M3, M0, M1)),
-                    np.hstack((M3, M0, M1, M2)),
-                    np.hstack((M0, M1, M2, M3))))
+M0 = np.array([[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+M1 = np.array([[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+M2 = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]])
+M3 = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]])
+M_hat0 = np.vstack(
+    (
+        np.hstack((M0, M1, M2, M3)),
+        np.hstack((M1, M2, M3, M0)),
+        np.hstack((M2, M3, M0, M1)),
+        np.hstack((M3, M0, M1, M2)),
+    )
+)
+M_hat1 = np.vstack(
+    (
+        np.hstack((M1, M2, M3, M0)),
+        np.hstack((M2, M3, M0, M1)),
+        np.hstack((M3, M0, M1, M2)),
+        np.hstack((M0, M1, M2, M3)),
+    )
+)
 M_prime = block_diag(M_hat0, M_hat1, M_hat1, M_hat0)
+
 
 def expand_key(key: BitArray) -> Tuple[BitArray, BitArray, BitArray]:
     """
@@ -57,6 +54,7 @@ def expand_key(key: BitArray) -> Tuple[BitArray, BitArray, BitArray]:
     key0_prime = rotated ^ (key0 >> 63)
     return key0, key0_prime, key1
 
+
 def s_layer(state: BitArray) -> BitArray:
     """
     Substitution layer for PRINCE cipher.
@@ -68,12 +66,29 @@ def s_layer(state: BitArray) -> BitArray:
         multiple of 4.
     """
     assert len(state) % 4 == 0
-    sbox = [0xb, 0xf, 0x3, 0x2, 0xa, 0xc, 0x9, 0x1,  # 01234567
-            0x6, 0x7, 0x8, 0x0, 0xe, 0x5, 0xd, 0x4]  # 89abcdef
+    sbox = [
+        0xB,
+        0xF,
+        0x3,
+        0x2,
+        0xA,
+        0xC,
+        0x9,
+        0x1,  # 01234567
+        0x6,
+        0x7,
+        0x8,
+        0x0,
+        0xE,
+        0x5,
+        0xD,
+        0x4,
+    ]  # 89abcdef
     result = BitArray()
     for nibble in state.cut(4):
         result.append(BitArray(hex(sbox[nibble.uint])))
     return result
+
 
 def inverse_s_layer(state: BitArray) -> BitArray:
     """
@@ -86,12 +101,29 @@ def inverse_s_layer(state: BitArray) -> BitArray:
         a multiple of 4.
     """
     assert len(state) % 4 == 0
-    sbox = [0xb, 0x7, 0x3, 0x2, 0xf, 0xd, 0x8, 0x9,  # 01234567
-            0xa, 0x6, 0x4, 0x0, 0x5, 0xe, 0xc, 0x1]  # 89abcdef
+    sbox = [
+        0xB,
+        0x7,
+        0x3,
+        0x2,
+        0xF,
+        0xD,
+        0x8,
+        0x9,  # 01234567
+        0xA,
+        0x6,
+        0x4,
+        0x0,
+        0x5,
+        0xE,
+        0xC,
+        0x1,
+    ]  # 89abcdef
     result = BitArray()
     for nibble in state.cut(4):
         result.append(BitArray(hex(sbox[nibble.uint])))
     return result
+
 
 def shift_rows(state: BitArray) -> BitArray:
     """
@@ -103,12 +135,29 @@ def shift_rows(state: BitArray) -> BitArray:
       - A state bit-array to shift rows. Its length must equal to 64 bits.
     """
     assert len(state) == 64
-    shift_table = [0x0, 0xd, 0xa, 0x7, 0x4, 0x1, 0xe, 0xb,  # 01234567
-                   0x8, 0x5, 0x2, 0xf, 0xc, 0x9, 0x6, 0x3]  # 89abcdef
+    shift_table = [
+        0x0,
+        0xD,
+        0xA,
+        0x7,
+        0x4,
+        0x1,
+        0xE,
+        0xB,  # 01234567
+        0x8,
+        0x5,
+        0x2,
+        0xF,
+        0xC,
+        0x9,
+        0x6,
+        0x3,
+    ]  # 89abcdef
     result_nibbles = [0] * 16
     for i, nibble in enumerate(state.cut(4)):
         result_nibbles[shift_table[i]] = nibble.copy()
     return BitArray().join(result_nibbles)
+
 
 def inverse_shift_rows(state: BitArray) -> BitArray:
     """
@@ -121,12 +170,29 @@ def inverse_shift_rows(state: BitArray) -> BitArray:
         bits.
     """
     assert len(state) == 64
-    inverse_shift_table = [0x0, 0x5, 0xa, 0xf, 0x4, 0x9, 0xe, 0x3,  # 01234567
-                           0x8, 0xd, 0x2, 0x7, 0xc, 0x1, 0x6, 0xb]  # 89abcdef
+    inverse_shift_table = [
+        0x0,
+        0x5,
+        0xA,
+        0xF,
+        0x4,
+        0x9,
+        0xE,
+        0x3,  # 01234567
+        0x8,
+        0xD,
+        0x2,
+        0x7,
+        0xC,
+        0x1,
+        0x6,
+        0xB,
+    ]  # 89abcdef
     result_nibbles = [0] * 16
     for i, nibble in enumerate(state.cut(4)):
         result_nibbles[inverse_shift_table[i]] = nibble.copy()
     return BitArray().join(result_nibbles)
+
 
 def m_prime_layer(state: BitArray) -> BitArray:
     """
@@ -142,6 +208,7 @@ def m_prime_layer(state: BitArray) -> BitArray:
     vec = np.array([bit.uint for bit in state.cut(1)])
     return BitArray((M_prime @ vec) % 2)
 
+
 def m_layer(state: BitArray) -> BitArray:
     """
     Matrix multiplication and row shift layer (M-layer) for PRINCE cipher.
@@ -152,6 +219,7 @@ def m_layer(state: BitArray) -> BitArray:
       - A state bit-array to apply M-layer. Its length must equal to 64 bits.
     """
     return shift_rows(m_prime_layer(state))
+
 
 def inverse_m_layer(state: BitArray) -> BitArray:
     """
@@ -164,6 +232,7 @@ def inverse_m_layer(state: BitArray) -> BitArray:
         bits.
     """
     return m_prime_layer(inverse_shift_rows(state))
+
 
 def encrypt(plaintext: BitArray, key: BitArray) -> BitArray:
     """
