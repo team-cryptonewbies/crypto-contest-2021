@@ -1,3 +1,4 @@
+from asn1crypto.core import Integer, Sequence
 from base64 import b64decode
 from collections import deque
 from typing import List
@@ -6,6 +7,9 @@ import binascii
 
 
 class StackProcessor:
+    class Signature(Sequence):
+        _fields = [("r", Integer), ("s", Integer)]
+
     def __init__(self, data: List[str]):
         self.data = data
 
@@ -50,6 +54,10 @@ class StackProcessor:
         if data.startswith("bytes_utf8:"):
             parsed = data.replace("bytes_utf8:", "", 1).encode("utf-8")
             return parsed
+        if data.startswith("sig:"):
+            parsed = b64decode(data.replace("sig:", "", 1))
+            signature = StackProcessor.Signature.load(parsed)
+            return (signature["r"], signature["s"])  # type: ignore
         return data
 
     def run(self):
@@ -62,9 +70,7 @@ class StackProcessor:
         self.stack = deque()
         for elem in self.data:
             parsed = self.__parse_data(elem)
-            if type(parsed) == int:
-                self.stack.append(parsed)
-            elif type(parsed) == bytes:
+            if type(parsed) in (int, bytes, tuple):
                 self.stack.append(parsed)
             else:
                 cmd_table = {
