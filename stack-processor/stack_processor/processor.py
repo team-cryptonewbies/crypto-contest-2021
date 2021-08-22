@@ -16,6 +16,11 @@ class StackProcessor:
         op2 = self.stack.pop()
         self.stack.append(op1 == op2)
 
+    def __dup(self):
+        op = self.stack.pop()
+        self.stack.append(op)
+        self.stack.append(op)
+
     @staticmethod
     def __parse_data(data: str):
         try:
@@ -44,6 +49,10 @@ class StackProcessor:
             if type(parsed) == int:
                 self.stack.append(parsed)
             else:
-                cmd_table = {"ADD": self.__add, "EQUAL": self.__equal}
+                cmd_table = {
+                    "ADD": self.__add,
+                    "EQUAL": self.__equal,
+                    "OP_DUP": self.__dup,
+                }
                 cmd_table[parsed]()  # type: ignore
         return self.stack
