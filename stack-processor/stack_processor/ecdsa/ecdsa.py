@@ -24,7 +24,7 @@ class ECDSA:
         """
         self.curve = curve
         self.hash_func = hash_func
-        self.G = CurvePoint(self.curve.basepoint[0], self.curve.basepoint[1], curve)
+        self.G = CurvePoint(curve, pos=self.curve.basepoint)
         if key_pair == None:
             self.d_U, self.Q_U = self.create_key_pair()
         else:
@@ -51,7 +51,7 @@ class ECDSA:
         assert self.d_U != None
         r = 0
         k = 0
-        R = CurvePoint(0, 0, self.curve)
+        R = CurvePoint(self.curve, pos=(0, 0))
         r = 0
         while r == 0:
             k, R = self.create_key_pair()

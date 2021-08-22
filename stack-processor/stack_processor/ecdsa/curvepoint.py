@@ -1,13 +1,41 @@
+from typing import Optional, Tuple
 from .curveparam import CurveParam
-from .data_conversion import field_elem_to_octet_list, octet_list_to_int
+from .data_conversion import (
+    field_elem_to_octet_list,
+    octet_list_to_int,
+    octet_str_to_point,
+)
 from .numbertheory import inv_mod
 from math import floor, log2
 
 
 class CurvePoint:
-    def __init__(self, x: int, y: int, curve: CurveParam):
-        self.x = x
-        self.y = y
+    def __init__(
+        self,
+        curve: CurveParam,
+        x: Optional[int] = None,
+        y: Optional[int] = None,
+        pos: Optional[Tuple[int, int]] = None,
+        octet_str: Optional[str] = None,
+    ):
+        """
+        Initialize CurvePoint.
+
+        :param curve: The curve this point belongs to.
+        :param x: Optional. x-coordinate of this point.
+        :param y: Optional. y-coordinate of this point.
+        :param pos: Optional. (x, y)-cordinate of this point.
+        :param octet_str: Optional. Octet string form of point.
+        """
+        if x != None and y != None:
+            self.x = x
+            self.y = y
+        elif pos != None:
+            self.x, self.y = pos
+        elif octet_str != None:
+            self.x, self.y = octet_str_to_point(octet_str, curve.params)
+        else:
+            raise ValueError("No point specified")
         self.curve = curve
 
     def __add__(self, another: "CurvePoint") -> "CurvePoint":
@@ -21,9 +49,9 @@ class CurvePoint:
         """
         assert self.curve.params == another.curve.params
         if self.x == self.y == 0:
-            return CurvePoint(another.x, another.y, self.curve)
+            return CurvePoint(self.curve, pos=(another.x, another.y))
         elif another.x == another.y == 0:
-            return CurvePoint(self.x, self.y, self.curve)
+            return CurvePoint(self.curve, pos=(self.x, self.y))
         elif self.x == another.x:
             if self.y == another.y:
                 lambda_ = (
@@ -35,8 +63,8 @@ class CurvePoint:
                 result_y = (lambda_ * (self.x - result_x) - self.y) % self.curve.params[
                     "p"
                 ]
-                return CurvePoint(result_x, result_y, self.curve)
-            return CurvePoint(0, 0, self.curve)
+                return CurvePoint(self.curve, x=result_x, y=result_y)
+            return CurvePoint(self.curve, x=0, y=0)
         lambda_ = (
             (another.y - self.y)
             * inv_mod(another.x - self.x, self.curve.params["p"])
@@ -44,7 +72,7 @@ class CurvePoint:
         )
         result_x = (lambda_ ** 2 - self.x - another.x) % self.curve.params["p"]
         result_y = (lambda_ * (self.x - result_x) - self.y) % self.curve.params["p"]
-        return CurvePoint(result_x, result_y, self.curve)
+        return CurvePoint(self.curve, pos=(result_x, result_y))
 
     def __rmul__(self, scalar: int) -> "CurvePoint":
         """
@@ -56,8 +84,8 @@ class CurvePoint:
         if scalar < 0:
             return -((-scalar) * self)
         elif scalar == 0:
-            return CurvePoint(0, 0, self.curve)
-        result = CurvePoint(0, 0, self.curve)
+            return CurvePoint(self.curve, pos=(0, 0))
+        result = CurvePoint(self.curve, pos=(0, 0))
         bitlen = floor(log2(scalar)) + 1
         for shift in range(bitlen - 1, -1, -1):
             bit = (scalar >> shift) & 1
@@ -72,7 +100,7 @@ class CurvePoint:
 
         :returns: Negative of self.
         """
-        return CurvePoint(self.x, -self.y, self.curve)
+        return CurvePoint(self.curve, pos=(self.x, -self.y))
 
     def __eq__(self, another: "CurvePoint") -> bool:
         """
