@@ -19,6 +19,9 @@ class TestStackProcessor(unittest.TestCase):
         processor = StackProcessor("1 2 EQUAL".split())
         result = processor.run()
         self.assertListEqual(list(result), [False])
+        processor = StackProcessor("1 2 OP_EqualVerify".split())
+        result = processor.run()
+        self.assertListEqual(list(result), [False])
 
     def test_op_dup(self):
         processor = StackProcessor("1 OP_DUP".split())

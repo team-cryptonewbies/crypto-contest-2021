@@ -52,6 +52,7 @@ class StackProcessor:
                 cmd_table = {
                     "ADD": self.__add,
                     "EQUAL": self.__equal,
+                    "OP_EqualVerify": self.__equal,
                     "OP_DUP": self.__dup,
                 }
                 cmd_table[parsed]()  # type: ignore
