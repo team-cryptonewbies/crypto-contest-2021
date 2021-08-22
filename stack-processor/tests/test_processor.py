@@ -2,6 +2,8 @@ import unittest
 from base64 import b64encode
 from stack_processor.processor import StackProcessor
 
+message = "Let Team Crypt0newbies win Crypto Contest 2021!"
+
 
 class TestStackProcessor(unittest.TestCase):
     def test_init(self):
@@ -33,7 +35,6 @@ class TestStackProcessor(unittest.TestCase):
         self.assertListEqual(list(result), [1, 1])
 
     def test_datatypes(self):
-        message = "Let Team Crypt0newbies win Crypto Contest 2021!"
         encoded_message = b64encode(message.encode("utf-8")).decode("ascii")
         processor = StackProcessor(
             ["bytes_utf8:" + message, "base64:" + encoded_message, "EQUAL"]
