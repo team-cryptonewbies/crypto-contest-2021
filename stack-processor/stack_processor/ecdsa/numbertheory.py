@@ -1,3 +1,14 @@
+def inv_mod(n: int, p: int):
+    """
+    Find a inverse of n mod p.
+
+    :param n: Value of n where nx === 1 (mod p)
+    :param p: Value of p where nx === 1 (mod p)
+    :returns: Value of x where nx === 1 (mod p)
+    """
+    return pow(n, -1, p)
+
+
 def legendre(a: int, p: int) -> int:
     """
     Calculate value of Legendre symbol (a/p).
