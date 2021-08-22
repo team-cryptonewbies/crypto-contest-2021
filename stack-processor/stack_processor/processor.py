@@ -1,5 +1,7 @@
+from base64 import b64decode
 from collections import deque
 from typing import List
+import binascii
 
 
 class StackProcessor:
@@ -34,6 +36,15 @@ class StackProcessor:
                 return parsed
             except ValueError:
                 pass
+        if data[:7] == "base64:":
+            try:
+                parsed = b64decode(data[7:])
+                return parsed
+            except binascii.Error:
+                pass
+        if data[:11] == "bytes_utf8:":
+            parsed = data[11:].encode("utf-8")
+            return parsed
         return data
 
     def run(self):
@@ -47,6 +58,8 @@ class StackProcessor:
         for elem in self.data:
             parsed = self.__parse_data(elem)
             if type(parsed) == int:
+                self.stack.append(parsed)
+            elif type(parsed) == bytes:
                 self.stack.append(parsed)
             else:
                 cmd_table = {
