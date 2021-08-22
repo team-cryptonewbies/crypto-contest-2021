@@ -25,3 +25,7 @@ class TestDataConversion(unittest.TestCase):
         self.assertListEqual(
             field_elem_to_octet_list(0x0111223344), [0x01, 0x11, 0x22, 0x33, 0x44]
         )
+        self.assertListEqual(
+            field_elem_to_octet_list(0x010111223344),
+            [0x01, 0x01, 0x11, 0x22, 0x33, 0x44],
+        )
