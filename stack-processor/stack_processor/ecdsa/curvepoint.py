@@ -1,4 +1,5 @@
 from .curveparam import CurveParam
+from .data_conversion import field_elem_to_octet_list, octet_list_to_int
 from .numbertheory import inv_mod
 from math import floor, log2
 
@@ -97,3 +98,21 @@ class CurvePoint:
             f"y^2 = x^3 + {self.curve.params['a']}x + {self.curve.params['b']}, "
             f"F_{self.curve.params['p']}"
         )
+
+    def octet_str(self) -> str:
+        """
+        Serialize to compressed octet string form.
+        """
+        if self.x == self.y == 0:
+            return "00"
+        octet_list = []
+        y_tilde_P = self.y % 2
+        if y_tilde_P == 0:
+            octet_list.append(2)
+        else:
+            octet_list.append(3)
+        octet_list.extend(field_elem_to_octet_list(self.x))
+        octet_str = hex(octet_list_to_int(octet_list)).replace("0x", "", 1)
+        if len(octet_str) % 2 != 0:
+            octet_str = "0" + octet_str
+        return octet_str

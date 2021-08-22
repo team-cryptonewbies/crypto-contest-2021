@@ -42,3 +42,14 @@ class TestCurvePoint(unittest.TestCase):
             self.assertEqual((-i) * P, -added)
             self.assertEqual((-i) * P + i * P, CurvePoint(0, 0, secp256r1))
             added += P
+
+    def test_serialization(self):
+        P = CurvePoint(secp256r1.basepoint[0], secp256r1.basepoint[1], secp256r1)
+        self.assertEqual(
+            P.octet_str().upper(),
+            (
+                "03"
+                "6B17D1F2 E12C4247 F8BCE6E5 63A440F2"
+                "77037D81 2DEB33A0 F4A13945 D898C296"
+            ).replace(" ", ""),
+        )
