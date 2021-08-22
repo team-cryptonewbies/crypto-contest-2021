@@ -1,4 +1,5 @@
 from .curveparam import CurveParam
+from .numbertheory import inv_mod
 from math import floor, log2
 
 
@@ -26,7 +27,7 @@ class CurvePoint:
             if self.y == another.y:
                 lambda_ = (
                     (3 * self.x ** 2 + self.curve.params["a"])
-                    * pow(2 * self.y, -1, self.curve.params["p"])
+                    * inv_mod(2 * self.y, self.curve.params["p"])
                     % self.curve.params["p"]
                 )
                 result_x = (lambda_ ** 2 - 2 * self.x) % self.curve.params["p"]
@@ -37,7 +38,7 @@ class CurvePoint:
             return CurvePoint(0, 0, self.curve)
         lambda_ = (
             (another.y - self.y)
-            * pow(another.x - self.x, -1, self.curve.params["p"])
+            * inv_mod(another.x - self.x, self.curve.params["p"])
             % self.curve.params["p"]
         )
         result_x = (lambda_ ** 2 - self.x - another.x) % self.curve.params["p"]
