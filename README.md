@@ -12,10 +12,6 @@
 
 문제에서 주어진 데이터가 한 nibble씩 변하는 것을 보면, Integral Cryptanalysis를 활용하라는 것임을 알 수 있음.
 
-- `reduced_prince_cipher.py`: 4-round PRINCE의 구현
-  - `cipher_tests.py`: 암호 테스트용 코드
-- `prince_integral_attack.py`: Integral Cryptanalysis를 이용한 공격
-
 ## 3번 암호응용 문제
 
 스택 프로세서 에뮬레이터를 구현하고 거기서 ECDSA까지 하기
