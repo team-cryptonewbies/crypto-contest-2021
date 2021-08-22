@@ -30,20 +30,20 @@ class StackProcessor:
             return parsed
         except ValueError:
             pass
-        if data[:2] == "0x":
+        if data.startswith("0x"):
             try:
-                parsed = int(data[2:], 16)
+                parsed = int(data.replace("0x", "", 1), 16)
                 return parsed
             except ValueError:
                 pass
-        if data[:7] == "base64:":
+        if data.startswith("base64:"):
             try:
-                parsed = b64decode(data[7:])
+                parsed = b64decode(data.replace("base64:", "", 1))
                 return parsed
             except binascii.Error:
                 pass
-        if data[:11] == "bytes_utf8:":
-            parsed = data[11:].encode("utf-8")
+        if data.startswith("bytes_utf8:"):
+            parsed = data.replace("bytes_utf8:", "", 1).encode("utf-8")
             return parsed
         return data
 
