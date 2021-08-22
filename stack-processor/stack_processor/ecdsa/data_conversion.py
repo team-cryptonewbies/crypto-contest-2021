@@ -72,6 +72,20 @@ def octet_list_to_field_elem(octet_list: List[int], p: int) -> int:
     return elem
 
 
+def field_elem_to_octet_list(elem: int) -> List[int]:
+    """
+    Convert an element of field F_p to octet list. Note that F_{2^m} is not
+    supported in this implementation.
+
+    :param elem: Element of field F_p
+    :returns: Converted octet list.
+    """
+    octet_str = hex(elem).replace("0x", "", 1)
+    if len(octet_str) % 2 != 0:
+        octet_str = "0" + octet_str
+    return grouper(2, octet_str)
+
+
 def octet_str_to_point(octet_str: str, params: Dict[str, int]) -> Tuple[int, int]:
     """
     Convert octet string to EC point.
