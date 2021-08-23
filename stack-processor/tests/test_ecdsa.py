@@ -2,6 +2,7 @@ import unittest
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import ec, utils
 
+from stack_processor.hashes import sha256
 from stack_processor.ecdsa.ecdsa import ECDSA
 from stack_processor.ecdsa.curvepoint import CurvePoint
 from stack_processor.ecdsa.curveparam import secp256r1
@@ -15,7 +16,7 @@ key_pair = (
         y=0xA23A356F8C69025DA4845ED80F85434DB8A653035BEE977FE4BD46BDCA05F4BD,
     ),
 )
-ecdsa = ECDSA(secp256r1, key_pair)
+ecdsa = ECDSA(secp256r1, sha256, key_pair)
 message = "Let Team Crypt0newbies win Crypto Contest 2021!"
 
 
@@ -29,7 +30,7 @@ class TestECDSA(unittest.TestCase):
         self.assertTrue(ecdsa.verify_sign(message, signature))
 
     def test_sign(self):
-        faulty = ECDSA(secp256r1, (None, key_pair[1]))
+        faulty = ECDSA(secp256r1, sha256, (None, key_pair[1]))
         with self.assertRaises(AssertionError):
             faulty.create_sign(message.encode("utf-8"))
         signature = utils.encode_dss_signature(

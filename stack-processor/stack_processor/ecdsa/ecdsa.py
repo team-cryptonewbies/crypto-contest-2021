@@ -5,15 +5,14 @@ from .curvepoint import CurvePoint
 from .curveparam import CurveParam
 from .data_conversion import octet_list_to_int, octet_str_to_octet_list
 from .numbertheory import inv_mod
-from ..hashes import sha256
 
 
 class ECDSA:
     def __init__(
         self,
         curve: CurveParam,
+        hash_func: Callable,
         key_pair: Optional[Tuple[Optional[int], CurvePoint]] = None,
-        hash_func: Callable = sha256,
     ):
         """
         Initalize ECDSA.
