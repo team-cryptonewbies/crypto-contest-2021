@@ -1,0 +1,8 @@
+1
+OP_DUP
+1
+OP_EqualVerify
+2
+ADD
+3
+EQUAL

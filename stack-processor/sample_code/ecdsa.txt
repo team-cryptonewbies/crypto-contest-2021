@@ -1,0 +1,8 @@
+bytes_utf8:Let Team Crypt0newbies win Crypto Contest 2021!
+sig:MEUCIQDXjs25nxpEdHvimOFnbjvrwH3+5j3ZR7qDX4PvXSfbtAIgYP0Lfwh+ZZ+a3ZwTVJT3F7Fs1XHaw8l5Bo1raJW9biA=
+pubkey:MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEl7iFfRl8gHaym4jl+JPFGOkFTJvuqmvhwx+m6krYPoGiOjVvjGkCXaSEXtgPhUNNuKZTA1vul3/kvUa9ygX0vQ==
+OP_DUP
+OP_HASH
+bytes_utf8:ec5a5889373752f564ebedcc9f1dd2b8a6514bcbafb186e1cca3214a852dc0ae
+OP_EqualVerify
+OP_CheckSig
