@@ -16,10 +16,11 @@ class StackProcessor:
     class PubkeyDER(Sequence):
         _fields = [("curveinfo", Sequence), ("pubkey", OctetBitString)]
 
-    def __init__(self, data: List[str], hash_func=lsh256):
+    def __init__(self, data: List[str], hash_func=lsh256, verbose=False):
         self.data = data
         self.hash_func = hash_func
         self.halt = False
+        self.verbose = verbose
 
     def __add(self):
         op1 = self.stack.pop()
@@ -100,9 +101,10 @@ class StackProcessor:
         """
         self.stack = deque()
         for elem in self.data:
-            print(self.stack)
             if self.halt:
                 return deque([False])
+            if self.verbose:
+                print(self.stack)
             parsed = self.__parse_data(elem)
             if type(parsed) in (int, bytes, tuple, StackProcessor.PubkeyDER):
                 self.stack.append(parsed)
