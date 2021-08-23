@@ -73,7 +73,7 @@ class ECDSA:
         )
         return (r, s)
 
-    def verify_sign(self, message: str, signature: Tuple[int, int]) -> bool:
+    def verify_sign(self, message: bytes, signature: Tuple[int, int]) -> bool:
         """
         Verify a signature for message.
 
@@ -87,7 +87,7 @@ class ECDSA:
         if not 1 <= s <= (self.curve.params["n"] - 1):
             return False
 
-        H = octet_str_to_octet_list(self.hash_func(message.encode("utf-8")))
+        H = octet_str_to_octet_list(self.hash_func(message))
         H_bar = octet_list_to_int(H)
         n_bitlen = ceil(log2(self.curve.params["n"]))
         if n_bitlen >= 8 * len(H):

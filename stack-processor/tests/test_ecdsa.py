@@ -27,7 +27,7 @@ class TestECDSA(unittest.TestCase):
             0xE74013272166ED7216B81428E151C1F4196BCB16A442E590C63685839B32A8C9,
             0xD231C993EDCB1E808A3018227051493F2E73E1FC0FB37C7C5D4A46A7A749C451,
         )
-        self.assertTrue(ecdsa.verify_sign(message, signature))
+        self.assertTrue(ecdsa.verify_sign(message.encode("utf-8"), signature))
 
     def test_sign(self):
         faulty = ECDSA(secp256r1, sha256, (None, key_pair[1]))
