@@ -43,7 +43,7 @@ def get_result_from_candidate(candidate):
     return reduce(add, [BitArray(hex(x["ok"].pop())) for x in candidate])
 
 
-def read_data_files(plaintext_path="./data/pt.dat", ciphertext_path="./data/ct.dat"):
+def read_data_files(plaintext_path="./pt.dat", ciphertext_path="./ct.dat"):
     plaintext_file = ConstBitStream(filename=plaintext_path)
     ciphertext_file = ConstBitStream(filename=ciphertext_path)
     plaintext_set = []
