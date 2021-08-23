@@ -6,7 +6,9 @@ if __name__ == "__main__":
         description="Stack processor powered by Team Crypt0newbies"
     )
     parser.add_argument("filepath", type=str, help="a stack program file to run")
-    parser.add_argument("--verbose", action="store_true")
+    parser.add_argument(
+        "--verbose", action="store_true", help="output intermediate stack contents"
+    )
     args = parser.parse_args()
     data = []
     with open(args.filepath) as f:
