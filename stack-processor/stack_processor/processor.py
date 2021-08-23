@@ -10,8 +10,9 @@ class StackProcessor:
     class Signature(Sequence):
         _fields = [("r", Integer), ("s", Integer)]
 
-    def __init__(self, data: List[str]):
+    def __init__(self, data: List[str], hash_func=lsh256):
         self.data = data
+        self.hash_func = hash_func
 
     def __add(self):
         op1 = self.stack.pop()
@@ -30,7 +31,7 @@ class StackProcessor:
 
     def __hash(self):
         op = self.stack.pop()
-        self.stack.append(lsh256(op).encode("utf-8"))
+        self.stack.append(self.hash_func(op).encode("utf-8"))
 
     @staticmethod
     def __parse_data(data: str):
