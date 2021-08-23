@@ -13,6 +13,7 @@ class StackProcessor:
     def __init__(self, data: List[str], hash_func=lsh256):
         self.data = data
         self.hash_func = hash_func
+        self.halt = False
 
     def __add(self):
         op1 = self.stack.pop()
@@ -23,6 +24,11 @@ class StackProcessor:
         op1 = self.stack.pop()
         op2 = self.stack.pop()
         self.stack.append(op1 == op2)
+
+    def __equalverify(self):
+        op1 = self.stack.pop()
+        op2 = self.stack.pop()
+        self.halt = op1 != op2
 
     def __dup(self):
         op = self.stack.pop()
@@ -70,6 +76,8 @@ class StackProcessor:
         """
         self.stack = deque()
         for elem in self.data:
+            if self.halt:
+                return deque([False])
             parsed = self.__parse_data(elem)
             if type(parsed) in (int, bytes, tuple):
                 self.stack.append(parsed)
@@ -77,7 +85,7 @@ class StackProcessor:
                 cmd_table = {
                     "ADD": self.__add,
                     "EQUAL": self.__equal,
-                    "OP_EqualVerify": self.__equal,
+                    "OP_EqualVerify": self.__equalverify,
                     "OP_DUP": self.__dup,
                     "OP_HASH": self.__hash,
                 }
