@@ -1,9 +1,18 @@
 import unittest
-from base64 import b64encode
+from base64 import b64encode, b64decode
 from stack_processor.processor import StackProcessor
-from stack_processor.hashes import lsh256
+from stack_processor.hashes import lsh256, sha256
 
 message = "Let Team Crypt0newbies win Crypto Contest 2021!"
+pubkey_base64 = (
+    "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEl7iFfRl8gHaym4jl+JPFGOkFTJvu"
+    "qmvhwx+m6krYPoGiOjVvjGkCXaSEXtgPhUNNuKZTA1vul3/kvUa9ygX0vQ=="
+)
+pubkey_decoded = b64decode(pubkey_base64)
+signature_base64 = (
+    "MEQCIEXkumF/HHJF5wcqFKaY3vNjKAEYIHAzbEC9SiMqcuaVAiAnOv1YYGQXPq1D"
+    "V+AJ/Q8WYhLhSO7+z1sltk6usbzHCw=="
+)
 
 
 class TestStackProcessor(unittest.TestCase):
@@ -58,3 +67,35 @@ class TestStackProcessor(unittest.TestCase):
         )
         result = processor.run()
         self.assertListEqual(list(result), [True])
+
+    def test_op_checksig(self):
+        processor = StackProcessor(
+            [
+                "bytes_utf8:" + message,
+                "sig:" + signature_base64,
+                "pubkey:" + pubkey_base64,
+                "OP_DUP",
+                "OP_HASH",
+                "bytes_utf8:" + sha256(pubkey_decoded),
+                "OP_EqualVerify",
+                "OP_CheckSig",
+            ],
+            sha256,
+        )
+        result = processor.run()
+        self.assertListEqual(list(result), [True])
+        processor = StackProcessor(
+            [
+                "bytes_utf8:" + message + "!",
+                "sig:" + signature_base64,
+                "pubkey:" + pubkey_base64,
+                "OP_DUP",
+                "OP_HASH",
+                "bytes_utf8:" + sha256(pubkey_decoded),
+                "OP_EqualVerify",
+                "OP_CheckSig",
+            ],
+            sha256,
+        )
+        result = processor.run()
+        self.assertListEqual(list(result), [False])
