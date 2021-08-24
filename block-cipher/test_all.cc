@@ -66,9 +66,11 @@ int main() {
                          sizeof(uint64_t));
     std::cout << "Testing: " << std::hex << plaintext_block << " -> "
               << std::hex << ciphertext_block << std::dec << std::endl;
-    if (encrypt(plaintext_block, k0, k1) != ciphertext_block)
+    if (encrypt(plaintext_block, k0, k1) != ciphertext_block) {
       std::cout << "Mismatch: " << std::hex << encrypt(plaintext_block, k0, k1)
                 << ciphertext_block << std::dec << std::endl;
+      break;
+    }
   }
   return 0;
 }
