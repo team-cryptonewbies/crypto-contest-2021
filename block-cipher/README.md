@@ -1,5 +1,7 @@
 # PRINCE 전수 조사
 
+> 입력파일 엔디안 몰라서 몇주 날렸음
+
 - `reduced_prince_cipher.py`: 4-bit PRINCE 암호 파이썬 구현.
 - `prince_integral_attack.py`: Integral cryptanalysis로 `k1 ^ k0'` 을 구함. 키 탐색 공간을 2<sup>128</sup>에서 2<sup>64</sup>로 줄임.
 - `analysis.txt`: 키는 영문 소문자라고 했고, 이 때문에 각 바이트의 high 4-bit가 제한적. 쌩노가다로 그냥 구해보면 키의 반은 알수있음. 키 탐색 공간을 2<sup>64</sup>에서 2<sup>32</sup>로 줄임.
