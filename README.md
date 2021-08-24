@@ -10,7 +10,7 @@
 
 경량 암호 PRINCE64/128 깨기
 
-문제에서 주어진 데이터가 한 nibble씩 변하는 것을 보면, Integral Cryptanalysis를 활용하라는 것임을 알 수 있음.
+문제에서 주어진 데이터가 한 nibble씩 변하는 것을 보면, Integral cryptanalysis를 활용하라는 것임을 알 수 있음.
 
 ## 3번 암호응용 문제 (`stack-processor` 디렉토리)
 
